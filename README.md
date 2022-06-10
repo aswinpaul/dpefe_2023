@@ -1,5 +1,4 @@
-# enaasc_2022
-An efficient non-approximate algorithm for active inference agents and applications to stochastic control
+# An efficient non-approximate algorithm for active inference agents and applications to stochastic control
 Despite its general regard as a biologically plausible model for intelligent behaviour, active inference
 faced computational challenges in scaling up to commonly studied environments. Recent developments, including
 deep active inference, use environment-specific (trained) neural networks to approximate environment parameters
