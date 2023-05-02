@@ -1,5 +1,4 @@
-# dpefe_2023
-On efficient computation in active inference
+# On efficient computation in active inference
 
 Despite its general regard as a neurobiologically plausible model for intelligent behaviour, 
 active inference faces computational challenges in scaling up to commonly studied environments. 
