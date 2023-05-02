@@ -1,0 +1,110 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Feb 27 14:10:29 2023
+@author: aswinpaul
+"""
+
+import numpy as np
+import gymnasium as gym
+from minigrid.wrappers import FullyObsWrapper
+
+# Z learning agent 
+from agent_zlearning import z_learning_agent as z_agent
+
+# Environment
+env = gym.make("MiniGrid-Empty-5x5-v0", render_mode = "rgb_array")
+env = FullyObsWrapper(env) 
+
+# Helper functions
+def observation_decoder(observation, grid_size = 5):
+    agent_direction = observation['direction']
+    x = observation['image'][:,:,0]
+    num_states = grid_size*grid_size                    
+    agent_coor = np.argwhere(x == 10)
+    agent_state = (agent_coor[0][0] * grid_size) + agent_coor[0][1] - 1
+    obs = agent_state + agent_direction*num_states
+    return obs
+
+#trials
+seedloops = 1
+episodes = 50
+
+data = np.zeros((seedloops,episodes))
+
+
+for sl in range(seedloops):
+    
+    print('sl:', sl)
+    agent = z_agent(100,3)
+    
+    for pp in range(100):
+        tau = 0
+        done = False
+        
+        observation, info = env.reset()
+        obs = observation_decoder(observation)
+        
+        while(done == False):
+            action = np.random.randint(0,3)
+            prev_obs = obs    
+
+            # Fetching next-state reward from envrionment-function
+            observation, reward, terminated, truncated, info = env.step(action)
+            obs = observation_decoder(observation)
+            agent.update_model(prev_obs, action, obs)
+            if terminated or truncated:
+                done = True
+        agent.normalise_model_and_p()
+            
+
+    # Changing random seeds
+    rseed = sl;
+    np.random.seed(rseed)
+    
+    for ts in range(episodes):
+
+        done = False
+        tau = 0
+        
+        observation, info = env.reset(seed = rseed)
+        obs = observation_decoder(observation)
+        score = 0
+
+        while(done == False):
+            tau += 1
+            
+            if(ts > 10):
+                cond = True
+            else:
+                cond = False
+                
+            action = agent.decision_making(obs, cond)
+            prev_obs = obs    
+
+            # Fetching next-state reward from envrionment-function
+            observation, reward, terminated, truncated, info = env.step(action)
+            obs = observation_decoder(observation)
+            
+            #print(action, prev_obs, obs)
+            
+            reward = 100 if reward > 0 else -1
+            score += reward
+            
+            if(reward == 100):
+                agent.update_z(prev_obs, reward, obs, tau, terminal = True)
+            else:
+                agent.update_z(prev_obs, reward, obs, tau)
+            
+            agent.update_model(prev_obs, action, obs)
+            
+            if terminated or truncated:
+                done = True
+    
+        data[sl][ts] = score
+        agent.normalise_model_and_p()
+        
+# %%
+
+with open('data_trial_zl.npy', 'wb') as f:
+    np.save(f, data)
