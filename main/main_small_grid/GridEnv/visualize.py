@@ -4,15 +4,18 @@ from copy import deepcopy
 import numpy as np
 
 def showPNG(grid):
-	plt.figure(figsize=(10, 5))
+	plt.figure(figsize=(5, 5))
 	plt.imshow(grid, cmap=plt.cm.CMRmap, interpolation='nearest')
 	plt.xticks([]), plt.yticks([])
 	#plt.show()
 	plt.savefig("gridFile.png")
 
-grid = np.loadtxt(sys.argv[1], dtype=int)
+grid = np.loadtxt("grid10.txt", dtype=int)
+solution = np.loadtxt("solution10.txt", dtype=int)
 
-if sys.argv[1] != sys.argv[-1]:
+yes = True
+
+if yes:
 	nr = len(grid)
 	nc = len(grid[0])
 	x,y = 0,0
