@@ -238,7 +238,8 @@ class agent():
 
     # Planning with forward tree search (sophisitcated inference)
     def plan_tree_search(self, modalities = False):
-        #print("Planning")
+        # print("Planning")
+        
         self.G = np.zeros((self.numA, self.numS)) + self.EPS_VAL
         
         if(modalities == False):
@@ -250,7 +251,8 @@ class agent():
             N = 0
             self.countt = 0
             self.G += self.forward_search(mod, N) 
-            
+        
+        # print(self.countt)
         # Distribution for action-selection
         for l in range(self.numS):
             self.Q_actions[:,l] = softmax(-1*self.planning_precision*self.G[:,l])
@@ -291,6 +293,7 @@ class agent():
 
         action = np.random.choice(list(range(0, self.numA)), 
                                   size = None, replace = True, p = p)
+        action = 0
         #print(p)
         self.action = action
         return(action)

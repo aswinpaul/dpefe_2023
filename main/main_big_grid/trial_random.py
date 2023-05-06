@@ -38,7 +38,7 @@ for mt in range(m_trials):
         st.append(obs)
         for t in range(time_horizon):
             
-            action  = np.random.randint(0,4)
+            action = np.random.choice([0,1,2,3], size=None, replace=True, p=[0.25,0.25,0.25,0.25])
             obs, reward, terminated, truncated, info = env.step(action)
             st.append(obs)
             

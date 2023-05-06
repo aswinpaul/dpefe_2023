@@ -55,7 +55,7 @@ def plot_result(data):
     ql_rs_2 = np.std(np.transpose(data[1]), axis=1)
     ql_rs_3 = np.std(np.transpose(data[2]), axis=1)
     ql_rs_4 = np.std(np.transpose(data[3]), axis=1)
-    ql_rs_5 = np.std(np.transpose(data_5[:,0:episodes]), axis=1)
+    #ql_rs_5 = np.std(np.transpose(data_5[:,0:episodes]), axis=1)
 
     
     plt.fill_between(range(sample-1), ql_rm_1[:-1] + ql_rs_1[:-1], np.clip(ql_rm_1[:-1] - ql_rs_1[:-1], 0, None), alpha=0.3)
@@ -64,8 +64,8 @@ def plot_result(data):
     plt.fill_between(range(sample-1), ql_rm_4[:-1] + ql_rs_4[:-1], np.clip(ql_rm_4[:-1] - ql_rs_4[:-1], 0, None), alpha=0.3)
     #plt.fill_between(range(sample-1), ql_rm_5[:-1] + ql_rs_5[:-1],np.clip(ql_rm_5[:-1] - ql_rs_5[:-1], 0, None), alpha=0.3)
     
-    plt.legend(["Q-Learning agent", "Dyna-Q agent (memory replay=10)", "SI agent (Optimised, N = 2)", "DPEFE agent (N = 50)", "Random agent"])
-    plt.title("Performace of agents in grid environment with 50 states")
+    plt.legend(["Q-Learning agent", "Dyna-Q agent (memory replay=10)", "SI agent (T = 1)", "DPEFE agent (T = 30)", "Random agent"])
+    plt.title("Performance of agents in deterministic grid environment (50 states)")
     
     plt.xlabel("Episode number in trial")
     plt.ylabel("Length of epsiode")

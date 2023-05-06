@@ -20,7 +20,7 @@ from agent_soph_inf import agent as dpefe_agent
 # %%
 
 # Generative model
-s1_size = 50
+s1_size = 470
 s1_actions = ['Left', 'Right', 'Up', 'Down']
 
 o1_size = s1_size
@@ -61,8 +61,7 @@ for mt in range(m_trials):
                     action_precision = 16,
                     planning_horizon = N,
                     episode_horizon = 100,
-                    search_threshold = 1/2, 
-                    eta_par = 3000)
+                    eta_par = 6500)
     
     for trial in range(n_trials):
 
