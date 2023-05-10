@@ -45,14 +45,13 @@ goal_state = env.end_state
 
 C = helper.obj_array_zeros(num_obs)
 C[0] = 100*helper.onehot(goal_state, num_states[0])
+
 T = 30
 
-#B = helper.random_B_matrix(num_states, num_controls)
-#B[0] = 100*env.get_trueB()
 # %%
 
 # Trial
-m_trials = 10
+m_trials = 100
 n_trials = 100
 time_horizon = 15000
 
@@ -61,12 +60,12 @@ t_length = np.zeros((m_trials, n_trials))
 for mt in range(m_trials):
     print(mt)
     
-    a = dpefe_agent(num_states=num_states, 
-                    num_obs=num_obs, 
-                    num_controls=num_controls, 
+    a = dpefe_agent(num_states = num_states, 
+                    num_obs = num_obs, 
+                    num_controls = num_controls, 
                     a = A,
                     planning_precision = 1,
-                    action_precision = 16,
+                    action_precision = 1,
                     planning_horizon = T, 
                     c = C)
     
@@ -87,10 +86,11 @@ for mt in range(m_trials):
             
             #Checking for succesful episode
             if terminated or truncated:
-                action  = a.step(obs_list, t)
+                action = a.step(obs_list, t)
                 break
 
         t_length[mt,trial] = t
+        # restricitng planning to only even episodes after trial 10 to save comp.time
         a.end_of_trial()
         
 with open('data_dpefe.npy', 'wb') as file:

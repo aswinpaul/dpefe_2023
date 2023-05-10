@@ -55,7 +55,7 @@ a = si_agent(num_states=num_states, num_obs=num_obs,
                 num_controls=num_controls,
                 a = A,
                 planning_precision = 1,
-                action_precision = 16,
+                action_precision = 1,
                 planning_horizon = N,
                 episode_horizon = 100,
                 eta_par = eta)

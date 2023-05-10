@@ -61,7 +61,7 @@ for mt in range(m_trials):
                     action_precision = 1,
                     planning_horizon = N,
                     episode_horizon = 100,
-                    eta_par = 500) #Manually optimised eta parameter
+                    eta_par = 12500) #Manually optimised eta parameter
     
     for trial in range(n_trials):
 

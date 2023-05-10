@@ -15,9 +15,9 @@ num_actions = 4
 
 from agent_dynaq import dynaq_agent as dqa
 
-episodes=100
+episodes = 100
 
-seedloops = 10 #trials
+seedloops = 100 #trials
 # Dyna-Q with no memory replay is Q-Learning
 mem_replay = 0
 time_horizon = 15000

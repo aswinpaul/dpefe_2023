@@ -50,7 +50,7 @@ T = 50
 # %%
 
 # Trial
-m_trials = 10
+m_trials = 100
 n_trials = 100
 time_horizon = 15000
 

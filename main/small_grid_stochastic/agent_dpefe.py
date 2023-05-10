@@ -131,7 +131,7 @@ class agent():
     # Definition of variables
     def __init__(self, num_states, num_obs, num_controls, planning_horizon, 
                  a = 0, b = 0, c = 0, d = 0, action_precision = 1, 
-                 planning_precision = 1, MDP = False):
+                 planning_precision = 1, MDP = True):
         
         self.numS = 1
         self.numA = 1
@@ -177,6 +177,8 @@ class agent():
                 
         self.a += self.EPS_VAL
         self.b += self.EPS_VAL
+        self.c += self.EPS_VAL
+        self.d += self.EPS_VAL
             
         self.A = random_A_matrix(self.num_obs, self.num_states)*0 + self.EPS_VAL
         self.B = random_B_matrix(self.num_states, self.num_controls)*0 + self.EPS_VAL
@@ -229,8 +231,8 @@ class agent():
 
     # Planning with dynamic programming
     def plan_using_dynprog(self, modalities = False):
+        
         self.G = np.zeros((self.T-1, self.numA, self.numS)) + self.EPS_VAL
-        #self.Q_actions = np.zeros((self.T-1, self.numA, self.numS)) + (1 / self.numA)
         
         T = self.T
         if(modalities == False):
@@ -270,12 +272,13 @@ class agent():
     def take_decision(self):
         
         # Making sure self.tau is never greater than T-2
-        tau = 0 if self.tau > self.T-2 else self.tau
-        action_precision = 1 if self.tau > self.T else self.action_precision
+        tau = self.T-2 if self.tau > self.T-2 else self.tau
         
         p1 = np.matmul(self.G[tau,:,:], self.qs[0])
-        p = softmax(-1*action_precision*p1)
-        action = np.random.choice(list(range(0, self.numA)), size = None, replace = True, p = p)
+        p = softmax(-1*self.action_precision*p1)
+        
+        action = np.random.choice(list(range(0, self.numA)), size = None, 
+                                  replace = True, p = p)
         self.action = action
         
         return(action)
@@ -295,13 +298,12 @@ class agent():
         for i in range(len(self.num_states)):
             self.b[i][:,:,action[i]] += np.kron(self.qs_prev[i],self.qs[i].reshape((-1,1)))
     
-            
     def update_d(self):
         for i in range(len(self.num_states)):
             self.d[i] += self.qs[i]
     
     # Learning parameters A,B,C,D using a,b,c,d
-    def learn_parameters(self, factor=1):
+    def learn_parameters(self, factor = 1):
         for i in range(self.num_modalities):
             for k in range(self.num_states[0]):
                 self.A[i][:,k] = dirichlet.mean(factor*self.a[i][:,k])
@@ -312,11 +314,9 @@ class agent():
                     self.B[i][:,j,k] = dirichlet.mean(factor*self.b[i][:,j,k])
                 
         for i in range(len(self.num_states)):
-            self.d += self.EPS_VAL
             self.D[i] = dirichlet.mean(factor*self.d[i])
             
         for mod in range(self.num_modalities):
-            self.c += self.EPS_VAL
             self.C[mod] = dirichlet.mean(factor*self.c[mod])
         
     # Step Function for interaction with environment combining above functions
@@ -352,8 +352,8 @@ class agent():
         return(self.action)
 
     # End of trial
-    def end_of_trial(self, learning = True, planning = True, factor = 1):
+    def end_of_trial(self, learning = True, planning = True):
         if(planning == True):
             self.plan_using_dynprog()
         if(learning == True):
-            self.learn_parameters(factor)
+            self.learn_parameters()

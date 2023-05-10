@@ -59,7 +59,7 @@ plt.legend(["Q-Learning agent", "Dyna-Q agent (memory replay=10)", "SI agent (T 
 plt.title("Deterministic grid environment (50 states)")
 
 plt.xlabel("Episode number in trial")
-plt.ylim(0, 5000)
+plt.ylim(0, 8000)
 plt.xlim(0, 50)
 plt.ylabel("Length of epsiode")
 plt.savefig('perf_smallgrid_d.png', dpi=500, bbox_inches='tight');
