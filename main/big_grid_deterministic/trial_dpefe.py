@@ -51,7 +51,7 @@ T = 50
 # %%
 
 # Trial
-m_trials = 10
+m_trials = 100
 n_trials = 100
 time_horizon = 15000
 
@@ -65,7 +65,7 @@ for mt in range(m_trials):
                     num_controls=num_controls, 
                     a = A,
                     planning_precision = 1,
-                    action_precision = 16,
+                    action_precision = 1,
                     planning_horizon = T, 
                     c = C)
     seen_goal = False

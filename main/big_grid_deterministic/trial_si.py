@@ -43,7 +43,7 @@ A[0] = np.eye(s1_size)
 # %%
 
 # Trial
-m_trials = 10
+m_trials = 100
 n_trials = 100
 time_horizon = 15000
 
@@ -58,10 +58,10 @@ for mt in range(m_trials):
                     num_controls=num_controls, 
                     a = A,
                     planning_precision = 1,
-                    action_precision = 16,
+                    action_precision = 1,
                     planning_horizon = N,
                     episode_horizon = 100,
-                    eta_par = 6500)
+                    eta_par = 13500)
     
     for trial in range(n_trials):
 

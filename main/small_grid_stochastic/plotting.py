@@ -52,7 +52,7 @@ ql_rs_5 = np.std(np.transpose(data_5[:,0:episodes]), axis=1)
 plt.fill_between(range(sample-1), ql_rm_1[:-1] + ql_rs_1[:-1], np.clip(ql_rm_1[:-1] - ql_rs_1[:-1], 0, 999), alpha=0.3)
 plt.fill_between(range(sample-1), np.clip(ql_rm_2[:-1] + ql_rs_2[:-1], 0, 8000), np.clip(ql_rm_2[:-1] - ql_rs_2[:-1], 0, 999), alpha=0.3)
 plt.fill_between(range(sample-1), np.clip(ql_rm_3[:-1] + ql_rs_3[:-1], 0, 8000), np.clip(ql_rm_3[:-1] - ql_rs_3[:-1], 0, 999), alpha=0.3)
-# plt.fill_between(range(sample-1), np.clip(ql_rm_4[:-1] + ql_rs_4[:-1], 0, 8000), np.clip(ql_rm_4[:-1] - ql_rs_4[:-1], 0, 999), alpha=0.3)
+plt.fill_between(range(sample-1), np.clip(ql_rm_4[:-1] + ql_rs_4[:-1], 0, 8000), np.clip(ql_rm_4[:-1] - ql_rs_4[:-1], 0, 999), alpha=0.3)
 # plt.fill_between(range(sample-1), ql_rm_5[:-1] + ql_rs_5[:-1],np.clip(ql_rm_5[:-1] - ql_rs_5[:-1], 0, None), alpha=0.3)
 
 plt.legend(["Q-Learning agent", "Dyna-Q agent (memory replay=10)", "SI agent (T = 1)", "DPEFE agent (T = 30)", "Random agent"])
@@ -61,5 +61,5 @@ plt.title("Stochastic grid environment (50 states)")
 plt.xlabel("Episode number in trial")
 plt.ylim(0, 8000)
 plt.ylabel("Length of epsiode")
-plt.savefig('perf_smallgrid_s.png', dpi=500, width=5,height=5, bbox_inches='tight');
+plt.savefig('perf_smallgrid_s.png', dpi=500, bbox_inches='tight');
     

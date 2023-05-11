@@ -16,7 +16,7 @@ num_actions = 4
 from agent_dynaq import dynaq_agent as dqa
 
 episodes= 100
-seedloops = 10 #trials
+seedloops = 100 #trials
 mem_replay = 10
 time_horizon = 15000
 
