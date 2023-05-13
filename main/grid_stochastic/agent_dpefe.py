@@ -131,7 +131,7 @@ class agent():
     # Definition of variables
     def __init__(self, num_states, num_obs, num_controls, planning_horizon, 
                  a = 0, b = 0, c = 0, d = 0, action_precision = 1, 
-                 planning_precision = 1, MDP = True):
+                 planning_precision = 1, MDP = False):
         
         self.numS = 1
         self.numA = 1

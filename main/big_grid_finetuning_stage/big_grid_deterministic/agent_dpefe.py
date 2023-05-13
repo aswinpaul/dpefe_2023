@@ -272,7 +272,7 @@ class agent():
     def take_decision(self):
         
         # Making sure self.tau is never greater than T-2
-        tau = self.T-2 if self.tau > self.T-2 else self.tau
+        tau = 0 if self.tau > self.T-2 else self.tau
         
         p1 = np.matmul(self.G[tau,:,:], self.qs[0])
         p = softmax(-1*self.action_precision*p1)
@@ -296,14 +296,15 @@ class agent():
         action_list = [self.action]
         action = np.array(action_list)
         for i in range(len(self.num_states)):
-            self.b[i][:,:,action[i]] += np.kron(self.qs_prev[i],self.qs[i].reshape((-1,1)))
+            self.b[i][:,:,action[i]] += np.kron(self.qs_prev[i],
+                                                self.qs[i].reshape((-1,1)))
     
     def update_d(self):
         for i in range(len(self.num_states)):
             self.d[i] += self.qs[i]
     
     # Learning parameters A,B,C,D using a,b,c,d
-    def learn_parameters(self, factor = 1):
+    def learn_parameters(self, factor = 100):
         for i in range(self.num_modalities):
             for k in range(self.num_states[0]):
                 self.A[i][:,k] = dirichlet.mean(factor*self.a[i][:,k])
@@ -314,10 +315,10 @@ class agent():
                     self.B[i][:,j,k] = dirichlet.mean(factor*self.b[i][:,j,k])
                 
         for i in range(len(self.num_states)):
-            self.D[i] = dirichlet.mean(factor*self.d[i])
+            self.D[i] = dirichlet.mean(self.d[i])
             
         for mod in range(self.num_modalities):
-            self.C[mod] = dirichlet.mean(factor*self.c[mod])
+            self.C[mod] = dirichlet.mean(self.c[mod])
         
     # Step Function for interaction with environment combining above functions
     

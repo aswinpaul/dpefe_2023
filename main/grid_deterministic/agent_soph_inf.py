@@ -131,7 +131,7 @@ class agent():
     def __init__(self, num_states, num_obs, num_controls, planning_horizon = 2, 
                  episode_horizon = 100,
                  a = 0, b = 0, c = 0, d = 0, action_precision = 1, 
-                 planning_precision = 1, MDP = False, 
+                 planning_precision = 1, MDP = True,
                  search_threshold = 1/16, eta_par = 10000):
         
         self.numS = 1
