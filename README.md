@@ -21,11 +21,11 @@ We benchmark the proposed solutions through simulations in a standard grid world
 ## Planning in DPEFE vs SI
 
 <p align="center">
-  <img src = "https://github.com/aswinpaul/dpefe_2023/blob/main/dpefevssi.png" width="50%" height="50%" />
+  <img src = "https://github.com/aswinpaul/dpefe_2023/blob/main/github%20images/dpefevssi.png" width="50%" height="50%" />
 </p>
 
 ## Learning of prior preference
 
 <p align="center">
-  <img src = "https://github.com/aswinpaul/dpefe_2023/blob/main/learning_prior_preference.gif" width="25%" height="25%" />
+  <img src = "https://github.com/aswinpaul/dpefe_2023/blob/main/github%20images/learning_prior_preference.gif" width="25%" height="25%" />
 </p>
