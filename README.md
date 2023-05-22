@@ -20,5 +20,5 @@ We benchmark the proposed solutions through simulations in a standard grid world
 
 <!-- 
 <p align="center">
-  <img src=".github/learning_prior_preference.gif" width="50%" height="50%"/>
+  <img src="learning_prior_preference.gif" width="50%" height="50%"/>
 </p> -->
