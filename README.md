@@ -18,6 +18,12 @@ the much more complicated task of defining a temporally informed target distribu
 learning the prior preference distribution inspired by the Z-learning algorithm dependent on a similar desirability function. 
 We benchmark the proposed solutions through simulations in a standard grid world task.
 
+## Planning in DPEFE vs SI
+
+<p align="center">
+  <img src = "https://github.com/aswinpaul/dpefe_2023/blob/main/dpefevssi.png" width="50%" height="50%" />
+</p>
+
 ## Learning of prior preference
 
 <p align="center">
