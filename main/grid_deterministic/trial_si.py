@@ -5,8 +5,9 @@ Created on Mon Oct 24 12:38:48 2022
 
 @author: aswinpaul
 """
+import matplotlib.pyplot as plt
 
-from GridEnv.grid_env import grid_environment as Env 
+from grid_env import grid_environment as Env 
 env = Env()
 # Environment grid_env.grid_environment()
 
@@ -42,8 +43,20 @@ A[0] = np.eye(s1_size)
 
 # %%
 
+def render_c_matrix(t, path="c_matrix_uninf.txt"):
+    plt.figure(figsize=(5, 5))
+    grid = np.loadtxt(path, dtype = int)
+    plt.imshow(grid, cmap=plt.cm.CMRmap, interpolation='nearest')
+    plt.xticks([]), plt.yticks([])
+    # plt.show()
+    # Figure figure when rendered in environment
+    #plt.savefig(f'./img/img_{t}.png')
+    plt.savefig('uninfc.png')
+    
+render_c_matrix(0)
+    
 # Trial
-m_trials = 100
+m_trials = 1
 n_trials = 100
 time_horizon = 15000
 
@@ -52,7 +65,7 @@ t_length = np.zeros((m_trials, n_trials))
 for mt in range(m_trials):
     print(mt)
     
-    N = 1
+    N = 2
     
     a = dpefe_agent(num_states=num_states, num_obs=num_obs, 
                     num_controls=num_controls, 
@@ -63,8 +76,21 @@ for mt in range(m_trials):
                     episode_horizon = 100,
                     eta_par = 13000) #Manually optimised eta parameter
     
+    # render_c_matrix()
+    
     for trial in range(n_trials):
-
+        C_matrix = a.C[0]
+        
+        c_text = np.loadtxt("c_matrix.txt", dtype = int)
+        
+        for i in range(env.numS):
+            [x,y] = env.statestoc(i)
+            c_text[x][y] = int(10000*C_matrix[i])
+            
+        np.savetxt("c_matrix.txt",c_text, fmt='%i')   
+        
+        render_c_matrix(trial)
+        
         obs, info = env.reset(seed=42)
         obs_list = [obs]
         prev_obs_list = obs_list
@@ -72,7 +98,8 @@ for mt in range(m_trials):
         score = 0
         st = []
         st.append(obs)
-        cc = a.C[0]    
+        cc = a.C[0]
+        
         for t in range(time_horizon):
             
             action  = a.step(obs_list, t)
@@ -103,5 +130,5 @@ for mt in range(m_trials):
         t_length[mt,trial] = t
         a.end_of_trial()
         
-with open('data_si.npy', 'wb') as file:
-    np.save(file, t_length)
+#with open('data_si.npy', 'wb') as file:
+    #np.save(file, t_length)

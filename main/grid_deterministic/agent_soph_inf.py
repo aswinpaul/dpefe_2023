@@ -238,60 +238,63 @@ class agent():
 
     # Planning with forward tree search (sophisitcated inference)
     def plan_tree_search(self, modalities = False):
-        #print("Planning")
         self.G = np.zeros((self.numA, self.numS)) + self.EPS_VAL
-        #self.Q_actions = np.zeros((self.numA, self.numS)) + (1 / self.numA)
-        
+        self.Q_actions = np.zeros((self.numA, self.numS)) + (1 / self.numA)
+
+        # print("Planning")
+
         if(modalities == False):
             moda = list(range(self.num_modalities))
         else:
             moda = modalities
-        
+
         for mod in moda:
             N = 0
             self.countt = 0
-            self.G += self.forward_search(mod, N) 
-            
+            self.G = self.forward_search(mod, N)
+
+            # print("No.of.total planning steps",self.countt)
+
         # Distribution for action-selection
         for l in range(self.numS):
             self.Q_actions[:,l] = softmax(-1*self.planning_precision*self.G[:,l])
-                
+
     def forward_search(self, mod, N):
         self.countt += 1
         N += 1
-        
+
         Q_po = np.zeros((self.A[mod].shape[0], self.numS, self.numA))
         G = np.zeros((self.numA, self.numS)) + self.EPS_VAL
-        
+
         for i in range(self.numS):
             for j in range(self.numA):
-            
+
                 Q_po[:,i,j] = self.A[mod].dot(self.B[0][:,i,j])
-                G[j,i] += kl_div(Q_po[:,i,j],self.C[mod]) + np.dot(
-                    self.B[0][:,i,j],entropy(self.A[mod]))
-                
-                if(N < self.N and (self.Q_actions[j,i] > self.threshold)):
-                    
+                G[j,i] += kl_div(Q_po[:,i,j],self.C[mod]) + np.dot(self.B[0][:,i,j],
+                                                                   entropy(self.A[mod]))
+        for l in range(self.numS):
+            self.Q_actions[:,l] = softmax(-1*self.planning_precision*self.G[:,l])
+
+        for i in range(self.numS):
+            for j in range(self.numA):
+                if(N < self.N and self.Q_actions[j,i] > self.threshold):
+
                     G_next = self.forward_search(mod, N)
-                    
-                    a = np.reshape(np.multiply(self.Q_actions[:,:], G_next), 
-                                   (self.numA,self.numS))
-                    b = np.reshape(self.B[0][:,i,j], (self.numS,1))
-                    x = np.sum(np.matmul(a, b))
-                    G[j,i] += x
-            
+                    G[j,i] += np.sum(np.matmul(np.reshape(np.multiply(
+                                self.Q_actions[:,:],G_next[:,:]),
+                                (self.numA,self.numS)),np.reshape(self.B[0][:,i,j],
+                                                                  (self.numS,1))))
+
         return G
-    
+
     # Decision making
     def take_decision(self):
-        
-        p1 = np.matmul(self.G[:,:], self.qs[0])
-        action_precision = 1 if self.tau > self.T else self.action_precision
-        
-        p = softmax(-1*action_precision*p1)
-        action = np.random.choice(list(range(0, self.numA)), 
-                                  size = None, replace = True, p = p)
-        #print(p)
+
+        p = np.matmul(self.G, self.qs[0])
+        p = softmax(-1*self.action_precision*p)
+
+        action = np.random.choice(list(range(0, self.numA)), size = None, replace = True, p = p)
+        #action = np.argmax(p)
         self.action = action
         return(action)
 
