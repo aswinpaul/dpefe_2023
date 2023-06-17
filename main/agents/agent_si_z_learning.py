@@ -73,7 +73,8 @@ class si_agent_learnc(si_agent):
                 
                 if(terminal == True):
                     self.c[mod][obs[mod]] = exp_reward
-                    self.c[mod][prev_obs[mod]] = eta*exp_reward
+                    b = eta*self.c[mod][obs[mod]]
+                    self.c[mod][prev_obs[mod]] = b
                     
                 else:
                     a = (1 - eta)*self.c[mod][prev_obs[mod]]

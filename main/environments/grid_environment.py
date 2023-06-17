@@ -62,6 +62,7 @@ class grid_environment():
                     
         numS = len(validstates)
         self.validstates = validstates
+        self.allstates = allstates
         self.numS = numS
         actions = ['North', 'South', 'East', 'West']
         numA = len(actions)
@@ -164,9 +165,12 @@ class grid_environment():
     
     def statestoc(self,s):
         return [self.validstates[s][0], self.validstates[s][1]]
+
+    def allstatestoc(self,s):
+        return [self.allstates[s][0], self.allstates[s][1]]
         
     def render(self, animation_save = False, tau = 0):
-        plt.figure(figsize=(3.5, 3.5))
+        plt.figure(figsize=(5, 5))
         grid = np.loadtxt(self.path, dtype = int)
         [gx, gy] = self.statestoc(self.end_state)
         [x,y] = self.statestoc(self.current_state)
@@ -180,8 +184,8 @@ class grid_environment():
         else:
             plt.show()
 
-    def render_c_matrix(self, c, animation_save = False, tau = 0):
-        plt.figure(figsize=(3.5, 3.5))
+    def render_c_matrix(self, c, image_save = False, animation_save = False, tau = 0):
+        plt.figure(figsize=(5, 5))
         if c is not None:
             grid = c
         plt.imshow(grid, cmap=plt.cm.CMRmap, interpolation='nearest')
@@ -189,6 +193,8 @@ class grid_environment():
         if(animation_save == True):
             # Figure figure when rendered in environment
             plt.savefig(f'./animation/img_{tau}.png')
+        elif(image_save == True):
+            plt.savefig("c_matrix.png")
         else:
             plt.show()
         

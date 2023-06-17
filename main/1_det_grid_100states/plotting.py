@@ -49,7 +49,7 @@ plt.legend(["Q-Learning agent",
             "Dyna-Q agent (memory replay=10)", 
             "Random agent",
             "DPEFE agent (N = 30)",
-            "SI agent (N = 1)",
+            "AIF agent (N = 1)",
             ])
 plt.title("Deterministic grid environment (100 states)")
 

@@ -7,7 +7,6 @@ Created on Mon Oct 24 12:38:48 2022
 """
 
 import numpy as np
-np.random.seed(10)
 from scipy.stats import dirichlet
 
 # This is needed agents are in a diff folder
@@ -15,7 +14,7 @@ import os
 import sys
 from pathlib import Path
 
-eta = 15000 #int(sys.argv[1])
+eta = int(sys.argv[1])
 
 path = Path(os.getcwd())
 module_path = str(path.parent) + '/'
@@ -76,7 +75,7 @@ for i in range(len(num_states)):
 # %%
     
 # Trial
-m_trials = 10
+m_trials = 1
 n_trials = 50
 
 time_horizon = 10000
@@ -107,7 +106,7 @@ for mt in range(m_trials):
         a.tau = 0  
         
         for t in range(time_horizon):
-            a.alpha = 1024
+            a.alpha = 1
             
             action  = a.step([obs], t)
             prev_obs = obs
@@ -132,7 +131,7 @@ for mt in range(m_trials):
 
         score_vec[mt,trial] = score
 
-print("Eta,",eta,",Mean length of episode,",np.mean(score_vec[:,25:]))
+print(", Eta,",eta,",Mean length of episode,",np.mean(score_vec[:,25:]))
 
-with open('data_si.npy', 'wb') as file:
-    np.save(file, score_vec)
+#with open('data_si.npy', 'wb') as file:
+    #np.save(file, score_vec)
