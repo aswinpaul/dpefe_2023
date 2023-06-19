@@ -23,7 +23,7 @@ import numpy as np
 np.random.seed(10)
 
 # Trial
-m_trials = 1000
+m_trials = 100
 n_trials = 50
 time_horizon = 15000
 

@@ -22,7 +22,7 @@ class grid_environment():
     def __init__(self, path, 
                  end_state,
                  stochastic = False, 
-                 epi_length_limit = 10000):
+                 epi_length_limit = 10000, p_rew = 10, n_rew = -1e-3):
         
         #Reading arguments for program from shell call
         gridpath = path
@@ -93,7 +93,11 @@ class grid_environment():
                     #North
                     if(j==0):
                         ap=a-1
-                        bp=b
+                        if(ap<1):
+                            ap = 1
+                        bp=b-ss
+                        if(bp<1):
+                            bp = 1
                         for k in range(numS):
                             if(validstates[k][0]==ap and validstates[k][1]==bp):
                                 sp=(ap,bp)
@@ -107,7 +111,11 @@ class grid_environment():
                     #South
                     if(j==1):
                         ap=a+1
-                        bp=b
+                        if(ap<1):
+                            ap = 1
+                        bp=b-ss
+                        if(bp<1):
+                            bp = 1
                         for k in range(numS):
                             if(validstates[k][0]==ap and validstates[k][1]==bp):
                                 sp=(ap,bp)
@@ -120,8 +128,12 @@ class grid_environment():
                         self.T[s1,ac,s2] += p
                     #East
                     if(j==2):
-                        ap=a
+                        ap=a-ss
+                        if(ap<1):
+                            ap = 1
                         bp=b+1
+                        if(bp<1):
+                            bp = 1
                         for k in range(numS):
                             if(validstates[k][0]==ap and validstates[k][1]==bp):
                                 sp=(ap,bp)
@@ -134,8 +146,12 @@ class grid_environment():
                         self.T[s1,ac,s2] += p
                     #West
                     if(j==3):
-                        ap=a
+                        ap=a-ss
+                        if(ap<1):
+                            ap = 1
                         bp=b-1
+                        if(bp<1):
+                            bp = 1
                         for k in range(numS):
                             if(validstates[k][0]==ap and validstates[k][1]==bp):
                                 sp=(ap,bp)
@@ -148,11 +164,14 @@ class grid_environment():
                         self.T[s1,ac,s2] += p
                     
         #Fixed start and goal state
+        self.stochastic = stochastic
         self.end_state = end_state
         self.termination = False
         self.truncation = False
         self.info = None
         self.tau_limit = epi_length_limit
+        self.p_rew = p_rew
+        self.n_rew = n_rew
         
     #to get the state number corresponding to the coordinate of a valis state
     def ctostates(self,x,y):
@@ -210,15 +229,26 @@ class grid_environment():
         
     def step(self, action):
         self.tau += 1
-        n_s = np.argmax(self.T[self.current_state, action, :])
+        
+        if(self.stochastic == False):
+            n_s = np.argmax(self.T[self.current_state, action, :])
+            self.current_state = n_s
+        else:
+            # Transition noise
+            poss_ns = list(range(0,self.numS))
+            n_s = np.random.choice(poss_ns, p=self.T[self.current_state,action,:])
+            self.current_state = n_s
+            # Obs noise
+            n_s = np.random.choice(poss_ns, p=self.T[self.current_state,action,:])
+            
         if(n_s == self.end_state):
             self.termination = True
-            reward = 10
+            reward = self.p_rew
         else:
-            reward = -1e-3
+            reward = self.n_rew
+            
         if(self.tau > self.tau_limit):
             self.truncation = True
-        self.current_state = n_s
         return n_s, reward, self.termination, self.truncation, self.info
         
     def get_trueB(self):

@@ -29,7 +29,7 @@ num_actions = env.numA
 # agent
 # agent
 from agents.agent_dpefe import dpefe_agent as dpefe_agent
-from pymdp.utils import random_A_matrix, obj_array_zeros, random_B_matrix
+from pymdp.utils import random_A_matrix, obj_array_zeros
 
 # %%
 
@@ -62,7 +62,7 @@ C[0][goal_state] = 100
 # %%
 
 # Trial
-m_trials = 10
+m_trials = 100
 n_trials = 50
 time_horizon = 15000
 
@@ -71,12 +71,13 @@ score_vec = np.zeros((m_trials, n_trials))
 for mt in range(m_trials):
     print(mt)
     
-    N = 30
+    N = 80
     a = dpefe_agent(num_states = num_states, 
                     num_obs = num_obs, 
                     num_controls = num_controls, 
                     A = A,
-                    planning_horizon = N, 
+                    planning_horizon = N,
+                    action_precision = 1024,
                     C = C)
     
     for trial in range(n_trials):

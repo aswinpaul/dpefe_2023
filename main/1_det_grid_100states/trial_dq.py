@@ -18,7 +18,7 @@ module_path = str(path.parent) + '/'
 sys.path.append(module_path)
 
 from environments.grid_environment import grid_environment as Env 
-env = Env(path = '../environments/grid10.txt', start_state=6, end_state=37)
+env = Env(path = '../environments/grid10.txt', end_state=37)
 # Environment grid_env.grid_environment()
 
 num_states = env.numS

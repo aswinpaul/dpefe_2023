@@ -77,6 +77,7 @@ for mt in range(m_trials):
                     num_controls = num_controls, 
                     A = A,
                     planning_horizon = N, 
+                    action_precision = 1024,
                     C = C)
     
     for trial in range(n_trials):

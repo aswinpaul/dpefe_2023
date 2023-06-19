@@ -14,7 +14,7 @@ import os
 import sys
 from pathlib import Path
 
-eta = int(sys.argv[1])
+eta = 12000 #int(sys.argv[1])
 
 path = Path(os.getcwd())
 module_path = str(path.parent) + '/'
@@ -75,14 +75,14 @@ for i in range(len(num_states)):
 # %%
     
 # Trial
-m_trials = 1
+m_trials = 100
 n_trials = 50
 
 time_horizon = 10000
 score_vec = np.zeros((m_trials, n_trials))
 
 for mt in range(m_trials):
-    #print(mt)
+    print(mt)
     
     N = 1
     
@@ -106,9 +106,9 @@ for mt in range(m_trials):
         a.tau = 0  
         
         for t in range(time_horizon):
-            a.alpha = 1
+            a.alpha = 1024 if(t<100) else 1
             
-            action  = a.step([obs], t)
+            action  = a.step([obs])
             prev_obs = obs
             obs, reward, terminated, truncated, info = env.step(action)
             
@@ -126,12 +126,12 @@ for mt in range(m_trials):
             
             #Checking for succesful episode
             if terminated or truncated:
-                action  = a.step([obs], t)
+                action  = a.step([obs])
                 break
 
         score_vec[mt,trial] = score
 
-print(", Eta,",eta,",Mean length of episode,",np.mean(score_vec[:,25:]))
+#print(", Eta,",eta,",Mean length of episode,",np.mean(score_vec[:,25:]))
 
-#with open('data_si.npy', 'wb') as file:
-    #np.save(file, score_vec)
+with open('data_si.npy', 'wb') as file:
+    np.save(file, score_vec)

@@ -130,4 +130,4 @@ class si_agent_learnc(si_agent):
             self.tau += 1
             self.trial_tau += 1
 
-        return(self.action)
+        return(self.action[0])

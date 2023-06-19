@@ -37,7 +37,7 @@ for i in range(agents):
     plt.plot(range(sample-1),data_mean[i][:-1])
 
 data_std = {}    
-for i in [0,1,2,3,4]:
+for i in range(agents):
     fact = 0 if(i == 2) else 1
     data_std[i] = np.std(np.transpose(data[i][:,0:episodes]), axis=1)
     plt.fill_between(range(sample-1), 
@@ -48,13 +48,13 @@ for i in [0,1,2,3,4]:
 plt.legend(["Q-Learning agent", 
             "Dyna-Q agent (memory replay=10)", 
             "Random agent",
-            "DPEFE agent (N = 30)",
-            "AIF agent (N = 1)",
+            "DPEFE agent (T = 80)",
+            "AIF agent (T = 1)",
             ])
 plt.title("Deterministic grid environment (100 states)")
 
 plt.xlabel("Episode number")
-plt.ylim(-5, 10.5)
+plt.ylim(5, 10)
 plt.xlim(0, 50)
 plt.ylabel("Total score")
 plt.savefig('perf_1.png', dpi=500, bbox_inches='tight');
