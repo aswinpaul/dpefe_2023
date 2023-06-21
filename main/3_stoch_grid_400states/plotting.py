@@ -45,13 +45,13 @@ for i in range(agents):
 plt.legend(["Q-Learning agent", 
             "Dyna-Q agent (memory replay=10)",
             "Random agent",
-            "DPEFE agent (N = 30)"
+            "DPEFE agent (T = 80)"
             ])
 
 plt.title("Stochastic grid environment (400 states)")
 
 plt.xlabel("Episode number")
-plt.ylim(0, 10.5)
-plt.xlim(0, 50)
+plt.ylim(0, 10)
+plt.xlim(0, 49)
 plt.ylabel("Total score")
 plt.savefig('perf_3', dpi=500, bbox_inches='tight');

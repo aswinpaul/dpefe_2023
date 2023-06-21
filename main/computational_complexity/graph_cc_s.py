@@ -17,7 +17,7 @@ time = 2
 o_c_cai = state_space*(u**time)
 o_c_si = (state_space*u)**time
 o_c_dpefe = state_space*u*time
-o_c_aif_1 = state_space*u*time
+o_c_aif_1 = state_space*u
 
 plt.plot(state_space, o_c_cai)
 plt.plot(state_space, o_c_si)
