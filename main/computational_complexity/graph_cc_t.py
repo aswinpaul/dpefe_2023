@@ -35,5 +35,5 @@ plt.legend(["Classical Active Inference",
             "Sophisticated Inference", 
             "DPEFE Method",
             "AIF (T = 1)"])
-plt.title("Computational complexity vs $T$ [Fixed $Card(U)$ and $Card(U)$]")
+plt.title("Computational complexity vs $T$ [Fixed $Card(S)$ and $Card(U)$]")
 plt.savefig('Complexity4Methods_T.png', dpi=500, bbox_inches='tight')
