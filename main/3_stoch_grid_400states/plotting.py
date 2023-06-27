@@ -22,8 +22,11 @@ with open('data_random.npy', 'rb') as file:
      
 with open('data_dpefe.npy', 'rb') as file:
     data[3] = np.load(file)
+
+with open('data_si.npy', 'rb') as file:
+    data[4] = np.load(file)
     
-agents = 4
+agents = 5
 episodes = 50
 
 sample = np.shape(data[0][:,0:episodes][0])[0]
@@ -45,13 +48,14 @@ for i in range(agents):
 plt.legend(["Q-Learning agent", 
             "Dyna-Q agent (memory replay=10)",
             "Random agent",
-            "DPEFE agent (T = 80)"
+            "DPEFE agent (T = 80)",
+            "AIF agent (T = 1)"
             ])
 
 plt.title("Stochastic grid environment (400 states)")
 
 plt.xlabel("Episode number")
-plt.ylim(0, 10)
+plt.ylim(5, 10)
 plt.xlim(0, 49)
 plt.ylabel("Total score")
 plt.savefig('perf_3', dpi=500, bbox_inches='tight');

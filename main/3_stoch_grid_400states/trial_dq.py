@@ -17,9 +17,9 @@ path = Path(os.getcwd())
 module_path = str(path.parent) + '/'
 sys.path.append(module_path)
 
-from environments.grid_environment import grid_environment as Env 
-env = Env(path = '../environments/grid20.txt', 
-          stochastic = True, end_state=185, epi_length_limit=15000)
+from environments.grid_environment import grid_environment as Env
+time_horizon = 20000
+env = Env(path = '../environments/grid20.txt', stochastic = True, end_state=185, epi_length_limit = time_horizon, p_rew = 10, n_rew = -0.5e-3)
 # Environment grid_env.grid_environment()
 
 num_states = env.numS
@@ -28,9 +28,8 @@ num_actions = env.numA
 from agents.agent_dynaq import dynaq_agent as dqa
 
 episodes = 50
-seedloops = 10
+seedloops = 100
 mem_replay = 10
-time_horizon = 15000
 
 #Initialsing the model M(x,a,x',reward)
 score_vec = np.zeros((seedloops, episodes))
@@ -44,9 +43,6 @@ for sl in range(seedloops):
     np.random.seed(rseed)
     
     for ts in range(episodes):
-        if(ts == 25):
-            env = Env(path = '../environments/grid20.txt', 
-                      stochastic = True, end_state=22, epi_length_limit=15000)
         
         done = False
         tau = 0

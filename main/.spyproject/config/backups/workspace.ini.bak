@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['1_det_grid_100states/trial_dpefe.py', '1_det_grid_100states/plotting.py']
+recent_files = ['4_stoch_grid_gc10_400states/trial_random.py']
 
 [main]
 version = 0.2.0

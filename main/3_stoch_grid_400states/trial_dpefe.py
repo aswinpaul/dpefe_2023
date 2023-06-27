@@ -5,23 +5,25 @@ Created on Mon Oct 24 12:38:48 2022
 
 @author: aswinpaul
 """
-
-import numpy as np
-np.random.seed(10)
-
-# This is needed agents are in a diff folder
 import os
 import sys
+
+mtrial = int(sys.argv[1])
+print(mtrial)
+import numpy as np
+np.random.seed(mtrial)
+
+# This is needed agents are in a diff folder
 from pathlib import Path
 
 path = Path(os.getcwd())
 module_path = str(path.parent) + '/'
 sys.path.append(module_path)
 
-from environments.grid_environment import grid_environment as Env 
-env = Env(path = '../environments/grid20.txt', 
-          stochastic = True, end_state=36, epi_length_limit=15000)
-# Environment
+from environments.grid_environment import grid_environment as Env
+time_horizon = 20000
+env = Env(path = '../environments/grid20.txt', stochastic = True, end_state=185, epi_length_limit = 20000, p_rew = 10, n_rew = -0.5e-3)
+# Environment grid_env.grid_environment()
 
 num_states = env.numS
 num_actions = env.numA
@@ -63,43 +65,39 @@ C[0][goal_state] = 100
 # %%
 
 # Trial
-m_trials = 10
 n_trials = 50
-time_horizon = 15000
 
-score_vec = np.zeros((m_trials, n_trials))
-
-for mt in range(m_trials):
-    print(mt)
+score_vec = np.zeros((n_trials))
     
-    N = 80
-    a = dpefe_agent(num_states = num_states, 
-                    num_obs = num_obs, 
-                    num_controls = num_controls, 
-                    A = A,
-                    planning_horizon = N, 
-                    C = C)
-    a.lr_pB = 1e+10
-    
-    for trial in range(n_trials):
-        a.plan_using_dynprog()    
-        
-        obs, info = env.reset(seed=42)
-        a.tau = 0
-        score = 0
-        
-        for t in range(time_horizon):
-            
-            action  = a.step([obs], learning=True)
-            obs, reward, terminated, truncated, info = env.step(action)
-            score += reward  
-            
-            #Checking for succesful episode
-            if terminated or truncated:
-                action = a.step([obs], learning=True)
-                break
+N = 80
+a = dpefe_agent(num_states = num_states,
+                num_obs = num_obs,
+                num_controls = num_controls,
+                A = A,
+                planning_horizon = N,
+                action_precision = 1024,
+                C = C)
 
-        score_vec[mt,trial] = score
+for trial in range(n_trials):
+    a.plan_using_dynprog()
+
+    obs, info = env.reset(seed=42)
+    a.tau = 0
+    score = 0
+
+    for t in range(time_horizon):
+
+        action  = a.step([obs], learning=True)
+        obs, reward, terminated, truncated, info = env.step(action)
+        score += reward
+
+        #Checking for succesful episode
+        if terminated or truncated:
+            action = a.step([obs], learning=True)
+            break
+
+    score_vec[trial] = score
         
-with open('data_dpefe.npy', 'wb') as file:
+file_name = 'data_dpefe/data_dpefe_' + str(mtrial) + '.npy'
+with open(file_name, 'wb') as file:
     np.save(file, score_vec)

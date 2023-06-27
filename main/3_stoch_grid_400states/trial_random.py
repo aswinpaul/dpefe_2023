@@ -16,17 +16,17 @@ module_path = str(path.parent) + '/'
 sys.path.append(module_path)
 
 from environments.grid_environment import grid_environment as Env 
-env = Env(path = '../environments/grid20.txt', 
-          stochastic = True, end_state=150, epi_length_limit=15000)
+time_horizon = 20000
+env = Env(path = '../environments/grid20.txt', stochastic = True, end_state=185, epi_length_limit = time_horizon, p_rew = 10, n_rew = -0.5e-3)
 # Environment grid_env.grid_environment()
 
 import numpy as np
 np.random.seed(10)
 
 # Trial
-m_trials = 10
+m_trials = 100
 n_trials = 50
-time_horizon = 15000
+
 
 score_vec = np.zeros((m_trials, n_trials))
 
