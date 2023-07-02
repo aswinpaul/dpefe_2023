@@ -9,7 +9,7 @@ Created on Mon Jun 19 12:11:01 2023
 from matplotlib import pyplot as plt
 import numpy as np
 
-state_space = np.linspace(1,5,num = 5)
+state_space = np.linspace(0,5,num = 5)
 
 u = 4
 time = 2
@@ -30,7 +30,7 @@ plt.plot(state_space, o_c_aif_1, ls = '--')
 #plt.yscale("log")
 plt.xlabel("Dimension of state space ($Card(S)$)")
 plt.ylabel("$\mathcal{O}$ of computational complexity (linear scale)")
-plt.xlim(1, None)
+plt.xlim(0, None)
 plt.ylim(0, None)
 plt.legend(["Classical Active Inference", 
             "Sophisticated Inference", 
