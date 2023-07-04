@@ -5,6 +5,8 @@ Our first approach leverages the dynamic programming algorithm, known for its co
 Accordingly, our algorithm recursively assesses the expected free energy of actions in the reverse temporal order. This improves computational efficiency by orders of magnitude and allows precise model learning and planning, even under uncertain conditions. Our method simplifies the planning process and shows meaningful behaviour even when specifying only the agent's final goal state. 
 The proposed solutions make defining a target distribution from a goal state straightforward compared to the more complicated task of defining a temporally informed target distribution. The effectiveness of these methods is tested and demonstrated through simulations in standard grid-world tasks. These advances create new opportunities for various applications.
 
+Paper link: https://arxiv.org/abs/2307.00504
+
 ## Planning in DPEFE vs SI
 
 <p align="center">
